@@ -1,8 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getWord } from './utils/magic';
 
 function App() {
+
+  console.log(getWord());
+  
   return (
     <div className="App">
       <header className="App-header">
