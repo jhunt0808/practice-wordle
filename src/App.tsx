@@ -1,16 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FunctionComponent } from 'react';
+import './App.scss';
+import Game from './components/Game/Game';
 import { getWord } from './utils/magic';
 
-function App() {
+const App: FunctionComponent = () => {
 
   console.log(getWord());
   
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -23,6 +23,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <Game />
     </div>
   );
 }
