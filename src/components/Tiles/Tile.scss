@@ -1,0 +1,24 @@
+.tile {
+  align-items: center;
+  background: rgba(50, 50, 50, 0.7);
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	border-radius: 5px;
+	color: #FFFFFF;
+  display: flex;
+  height: 45px;
+  justify-content: center;
+	margin: 0 3px;
+  width: 35px;
+
+	&.correct {
+		background: rgba(9, 133, 35, 0.7);
+	}
+
+  &.present{
+    background: rgba(218, 221, 14, 0.7);
+  }
+
+  &.nope {
+    background: rgba(50, 50, 50, 0.7);
+  }
+}

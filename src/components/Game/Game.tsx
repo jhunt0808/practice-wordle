@@ -1,32 +1,54 @@
 import React, { FunctionComponent, useState, useRef, ChangeEvent } from "react";
-import KeyboardWrapper from "../Keyboard/KeyboardWrapper";
+import Tiles from "../Tiles/Tiles";
+import { keys } from '../../utils/keys';
+import { getWord, guessRows } from '../../utils/magic';
+import "./Game.scss";
+import Keys from "../Keys/Keys";
 
-const Game: FunctionComponent = () => {
-  const [input, setInput] = useState("");
-  const keyboard = useRef<any>(null);
 
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>): void => {
-    const input = event.target.value;
-    setInput(input);
-    keyboard.current.setInput(input);
-  };
+const Game = React.memo(() => {
+
+  const wordle: string = 'SUPER';
+
+  const handleClick = (keyVal: string) => {
+    console.log('handleClick', keyVal);
+    if(keyVal === '⌫') {
+      console.log('delete');
+      return;
+    }
+    if(keyVal === 'ENTER') {
+      console.log('check row');
+      return;
+    }
+    addLetter(keyVal);
+  }
+
+  let currentRow: number = 0;
+  let currentTile: number = 0;
+
+  const addLetter = (letter: string) => {
+    const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
+    tile!.textContent = letter;
+    guessRows[currentRow][currentTile] = letter;
+    tile!.setAttribute('data', letter);
+    console.log(guessRows);
+    currentTile++;
+  }
 
   return (
-    <div>
-      <input
-        value={input}
-        placeholder={"Tap on the virtual keyboard to start"}
-        onChange={e => onChangeInput(e)}
-      />
-      <KeyboardWrapper 
-        keyboardRef={keyboard} 
-        onChange={setInput}
-        correctLetters="A B C"
-        placedWrongLetters="D E F"
-        notUsedLetters="G H I"
-      />
+    <div className="game-container">
+      <div className="title-container">
+        <h1>Not Wordle</h1>
+      </div>
+      <div className="message-container"></div>
+
+      <Tiles guessRows={guessRows} />
+      
+      <Keys keys={keys} handleClick={(keyVal: string) => handleClick(keyVal)} />
+      
+
     </div>
   );
-};
+});
 
 export default Game;
