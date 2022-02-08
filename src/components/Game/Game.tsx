@@ -13,11 +13,11 @@ const Game = React.memo(() => {
   const handleClick = (keyVal: string) => {
     console.log('handleClick', keyVal);
     if(keyVal === '⌫') {
-      console.log('delete');
+      deleteLetter();
       return;
     }
     if(keyVal === 'ENTER') {
-      console.log('check row');
+      checkRow();
       return;
     }
     addLetter(keyVal);
@@ -27,12 +27,31 @@ const Game = React.memo(() => {
   let currentTile: number = 0;
 
   const addLetter = (letter: string) => {
-    const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
-    tile!.textContent = letter;
-    guessRows[currentRow][currentTile] = letter;
-    tile!.setAttribute('data', letter);
-    console.log(guessRows);
-    currentTile++;
+    if(currentTile < 5 && currentRow < 6) {
+      const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
+      tile!.textContent = letter;
+      guessRows[currentRow][currentTile] = letter;
+      tile!.setAttribute('data', letter);
+      console.log(guessRows);
+      currentTile++;
+    }
+  }
+
+  const deleteLetter = () => {
+    if(currentTile > 0){
+      currentTile--;
+      const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
+      tile!.textContent = '';
+      guessRows[currentRow][currentTile] = '';
+      tile?.setAttribute('data', '');
+    }
+  }
+
+  const checkRow = () => {
+    if(currentTile === 5){
+      const guess = guessRows[currentRow].join('');
+      console.log('guess is ' + guess, 'wordle is ' + wordle);
+    }
   }
 
   return (
