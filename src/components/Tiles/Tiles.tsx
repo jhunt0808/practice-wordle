@@ -3,7 +3,7 @@ import Tile from "./Tile";
 import "./Tiles.scss";
 
 interface ITilesProps {
-  guessRows: string[][]
+  guessRows: string[][];
 }
 
 const Tiles: FunctionComponent<ITilesProps> = ({

@@ -4,14 +4,16 @@ import { keys } from '../../utils/keys';
 import { getWord, guessRows } from '../../utils/magic';
 import "./Game.scss";
 import Keys from "../Keys/Keys";
+import Message from "../Message/Message";
 
 
 const Game = React.memo(() => {
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
 
   const wordle: string = 'SUPER';
 
   const handleClick = (keyVal: string) => {
-    console.log('handleClick', keyVal);
     if(keyVal === '⌫') {
       deleteLetter();
       return;
@@ -32,7 +34,6 @@ const Game = React.memo(() => {
       tile!.textContent = letter;
       guessRows[currentRow][currentTile] = letter;
       tile!.setAttribute('data', letter);
-      console.log(guessRows);
       currentTile++;
     }
   }
@@ -48,10 +49,68 @@ const Game = React.memo(() => {
   }
 
   const checkRow = () => {
-    if(currentTile === 5){
-      const guess = guessRows[currentRow].join('');
-      console.log('guess is ' + guess, 'wordle is ' + wordle);
+    const guess = guessRows[currentRow].join('');
+
+    if(currentTile > 4){
+      flipTile();
+      if(wordle === guess){
+        showMessage('You did it!');
+        setIsGameOver(true);
+        return;
+      } else {
+        if(currentRow >= 5) {
+          setIsGameOver(false);
+          return;
+        }
+
+        if(currentRow < 5){
+          currentRow++;
+          currentTile = 0;
+        }
+      }
     }
+  }
+
+  const showMessage = (message: string) => {
+    setMessage(message);
+    setTimeout(() => setMessage(''), 2000);
+  }
+
+  const addColorToKey = (keyLetter: string, color: string) => {
+    const key = document.getElementById(keyLetter);
+    key!.classList.add(color);
+  }
+
+  const flipTile = () => {
+    const rowTiles = document.querySelector('#guessRow-' + currentRow)?.childNodes;
+    let checkWordle = wordle;
+    const guess: { letter: any; color: string; }[] = [];
+
+    rowTiles?.forEach((tile: any) => {
+      guess.push({letter: tile.getAttribute('data'), color: 'grey-overlay'})
+    });
+
+    guess.forEach((guess: any, index: number) => {
+      if(guess.letter === wordle[index]){
+        guess.color = 'green-overlay';
+        checkWordle = checkWordle.replace(guess.letter, '');
+      }
+    })
+
+    guess.forEach((guess: any) => {
+      if(checkWordle.includes(guess.letter)){
+        guess.color = 'yellow-overlay';
+        checkWordle = checkWordle.replace(guess.letter, '');
+      }
+    })
+    
+    rowTiles!.forEach((tile: any, index: number) => {
+      setTimeout(() => {
+        tile.classList.add('flip');
+        tile.classList.add(guess[index].color);
+        addColorToKey(guess[index].letter, guess[index].color);
+      }, 500 * index);
+    })
   }
 
   return (
@@ -59,7 +118,8 @@ const Game = React.memo(() => {
       <div className="title-container">
         <h1>Not Wordle</h1>
       </div>
-      <div className="message-container"></div>
+
+      <Message message={message} />
 
       <Tiles guessRows={guessRows} />
       

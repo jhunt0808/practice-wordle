@@ -10,10 +10,6 @@ const Key: FunctionComponent<IKeyProps> = ({
 	handleClick
 }) => {
 
-	// const handleClick = () => {
-	// 	console.log('handleClick');
-	// }
-
 	return (
 		<button id={keyVal} onClick={() => handleClick(keyVal)}>{keyVal}</button>
 	);
