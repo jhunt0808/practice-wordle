@@ -1,19 +1,22 @@
-import React, { FunctionComponent, useState, useRef, ChangeEvent } from "react";
-import Tiles from "../Tiles/Tiles";
+import React, { useEffect, useState } from "react";
+import { KeyCodes } from '../../types/types';
 import { keys } from '../../utils/keys';
-import { getWord, guessRows } from '../../utils/magic';
-import "./Game.scss";
+import { getWord, guessRows, isInWordList, resetGuessRows } from '../../utils/magic';
 import Keys from "../Keys/Keys";
 import Message from "../Message/Message";
+import Tiles from "../Tiles/Tiles";
+import "./Game.scss";
 
 
 const Game = React.memo(() => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
+  const [wordle, setWorld] = useState<string>('');
+  const [currentRow, setCurrentRow] = useState<number>(0);
+  const [currentTile, setCurrentTile] = useState<number>(0);
 
-  const wordle: string = 'SUPER';
-
-  const handleClick = (keyVal: string) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleKeyInput = (keyVal: string) => {
     if(keyVal === '⌫') {
       deleteLetter();
       return;
@@ -25,33 +28,38 @@ const Game = React.memo(() => {
     addLetter(keyVal);
   }
 
-  let currentRow: number = 0;
-  let currentTile: number = 0;
-
   const addLetter = (letter: string) => {
     if(currentTile < 5 && currentRow < 6) {
       const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
       tile!.textContent = letter;
       guessRows[currentRow][currentTile] = letter;
       tile!.setAttribute('data', letter);
-      currentTile++;
+      setCurrentTile(currentTile + 1);
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const deleteLetter = () => {
-    if(currentTile > 0){
-      currentTile--;
-      const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + currentTile);
+    if(currentTile > 0){   
+      const tileToDelete = currentTile - 1;   
+      const tile = document.getElementById(`guessRow-` + currentRow + `-tile-` + tileToDelete);
       tile!.textContent = '';
-      guessRows[currentRow][currentTile] = '';
+      guessRows[currentRow][tileToDelete] = '';
       tile?.setAttribute('data', '');
+      setCurrentTile(currentTile - 1);
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const checkRow = () => {
     const guess = guessRows[currentRow].join('');
 
-    if(currentTile > 4){
+    if(currentTile > 4 && !isGameOver){
+      if(!isInWordList(guess)){
+        showMessage('Not in the word list!');
+        return;
+      }
+
       flipTile();
       if(wordle === guess){
         showMessage('You did it!');
@@ -60,20 +68,21 @@ const Game = React.memo(() => {
       } else {
         if(currentRow >= 5) {
           setIsGameOver(false);
-          return;
+          showMessage(`${wordle}`, true);
         }
 
         if(currentRow < 5){
-          currentRow++;
-          currentTile = 0;
+          setCurrentRow(currentRow + 1);
+          setCurrentTile(0);
         }
       }
+
     }
   }
 
-  const showMessage = (message: string) => {
+  const showMessage = (message: string, keep?: boolean) => {
     setMessage(message);
-    setTimeout(() => setMessage(''), 2000);
+    if(!keep) setTimeout(() => setMessage(''), 3000);
   }
 
   const addColorToKey = (keyLetter: string, color: string) => {
@@ -109,21 +118,52 @@ const Game = React.memo(() => {
         tile.classList.add('flip');
         tile.classList.add(guess[index].color);
         addColorToKey(guess[index].letter, guess[index].color);
-      }, 500 * index);
+      }, 400 * index);
     })
+  }
+
+  useEffect(() => {
+    const onKeyUp = (e: any) => {
+      if (e.keyCode >= KeyCodes.A && e.keyCode <= KeyCodes.Z) {
+        handleKeyInput(e.key.toUpperCase())
+        return;
+      } else if (e.keyCode === KeyCodes.Backspace) {
+        deleteLetter();
+        return;
+      } else if (e.keyCode === KeyCodes.Enter) {
+        checkRow();
+        return;
+      }
+    };
+
+    window.addEventListener("keyup", onKeyUp);
+
+    return () => window.removeEventListener("keyup", onKeyUp);
+  }, [checkRow, currentTile, deleteLetter, handleKeyInput]);
+    
+
+  const getTheWord = () => {
+    const button = document.getElementById('StartGame');
+    const word: string = getWord();
+    setWorld(word);
+    setIsGameOver(false);
+    setMessage('');
+    resetGuessRows();
+    button?.blur();
   }
 
   return (
     <div className="game-container">
       <div className="title-container">
         <h1>Not Wordle</h1>
+        <button id="StartGame" className="button" onClick={getTheWord}>Start Game</button>
       </div>
 
       <Message message={message} />
 
       <Tiles guessRows={guessRows} />
       
-      <Keys keys={keys} handleClick={(keyVal: string) => handleClick(keyVal)} />
+      <Keys keys={keys} handleKeyInput={(keyVal: string) => handleKeyInput(keyVal)} />
       
 
     </div>

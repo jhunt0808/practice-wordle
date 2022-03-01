@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useRef, ChangeEvent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import Tile from "./Tile";
 import "./Tiles.scss";
 
