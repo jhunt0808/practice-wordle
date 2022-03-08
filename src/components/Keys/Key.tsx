@@ -11,7 +11,7 @@ const Key: FunctionComponent<IKeyProps> = ({
 }) => {
 
 	return (
-		<button id={keyVal} onClick={() => handleKeyInput(keyVal)}>{keyVal}</button>
+		<button id={keyVal} onClick={() => handleKeyInput(keyVal)} className='key-button'>{keyVal}</button>
 	);
 }
 

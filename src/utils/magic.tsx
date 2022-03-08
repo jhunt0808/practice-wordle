@@ -37,7 +37,7 @@ export function resetGuessRows(): string[][] {
 	];
 }
 
-export const guessRows = [
+export const defaultGuessRows = [
 	['','','','','',],
 	['','','','','',],
 	['','','','','',],
@@ -45,3 +45,27 @@ export const guessRows = [
 	['','','','','',],
 	['','','','','',]
 ];
+
+export function resetBoard() {
+	const tiles = document.getElementsByClassName('tile');
+	for (var i = 0; i < tiles.length; i++) {
+		tiles[i].textContent = '';
+		tiles[i].setAttribute('data', '');
+		tiles[i].className = 'tile';
+	};
+	const keys = document.getElementsByClassName('key-button');
+	for (var i = 0; i < keys.length; i++) {
+		keys[i].className = 'key-button';
+	};
+}
+
+export const defaultStatistics = {
+	"currentStreak": 0,
+	"gamesPlayed": 0,
+	"gamesWon": 0,
+	"guesses": {
+	  "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "fail": 0
+	},
+	"maxStreak": 0,
+	"winPercentage": 0,
+  }
