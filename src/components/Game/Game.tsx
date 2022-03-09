@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { KeyCodes } from '../../types/types';
+import { Guesses, KeyCodes, Statistics } from '../../types/types';
 import { keys } from '../../utils/keys';
 import { getWord, defaultGuessRows, defaultStatistics, isInWordList, resetGuessRows, resetBoard } from '../../utils/magic';
 import Keys from "../Keys/Keys";
 import Message from "../Message/Message";
+import GameModal from "../GameModal/GameModal";
 import Tiles from "../Tiles/Tiles";
 import "./Game.scss";
 
@@ -14,8 +15,49 @@ const Game = React.memo(() => {
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentTile, setCurrentTile] = useState<number>(0);
   const [statistics, setStatistics] = useState<any>(defaultStatistics);
+  const [showModal, setShowModal] = useState<boolean>(true);
 
   let guessRows = defaultGuessRows;
+
+  const updateStatisticsState = (didWin: boolean) => {
+    let gamesPlayed: number = statistics.gamesPlayed + 1;
+    let currentStreak: number = didWin ? statistics.currentStreak + 1 : 0;
+    let gamesFailed: number = didWin ? statistics.guesses.fail : statistics.guesses.fail + 1;
+    let gamesWon: number = didWin ? statistics.gamesWon + 1 : statistics.gamesWon;
+    let winPercentage: number = gamesWon / gamesPlayed;
+    let maxStreak: number = currentStreak > statistics.maxStreak ? currentStreak : statistics.maxStreak;
+
+    if(didWin){
+      let guessRow: number = currentRow + 1;
+      let guessRowTotalWon: number = statistics.guesses[guessRow] + 1;
+      
+      setStatistics((statistics: any) => ({
+        ...statistics,
+        currentStreak,
+        gamesPlayed,
+        gamesWon,
+        guesses: {
+          ...statistics.guesses,
+          [guessRow]: guessRowTotalWon
+        },
+        maxStreak,
+        winPercentage
+      }));
+
+    } else {
+
+      setStatistics((statistics: any) => ({
+        ...statistics,
+        currentStreak,
+        gamesPlayed: gamesPlayed,
+        guesses: {
+          ...statistics.guesses,
+          fail: gamesFailed
+        },
+        winPercentage
+      }));
+    }
+  }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleKeyInput = (keyVal: string) => {
@@ -66,37 +108,16 @@ const Game = React.memo(() => {
       if(wordle === guess){
         showMessage('You did it!');
         setIsGameOver(true);
-        let guessRow: number = currentRow + 1;
-        let gamesPlayed: number = statistics.gamesPlayed + 1;
-        let gamesWon: number = statistics.gamesWon + 1;
-        let guessRowTotalWon: number = statistics.guesses[guessRow] + 1;
-        setStatistics((statistics: any) => ({
-          ...statistics,
-          gamesPlayed: gamesPlayed,
-          gamesWon: gamesWon,
-          guesses: {
-            ...statistics.guesses,
-            [guessRow]: guessRowTotalWon
-          }
-        }));
+        updateStatisticsState(true);
         window.localStorage.setItem('notWordle-reload', JSON.stringify(true));
-        
+        setShowModal(true);
         return;
       } else {
         if(currentRow >= 5) {
           setIsGameOver(true);
           showMessage(`${wordle}`, true);
-          let gamesPlayed: number = statistics.gamesPlayed + 1;
-          let gamesFailed: number = statistics.guesses.fail + 1;
-          console.log(gamesFailed);
-          setStatistics((statistics: any) => ({
-            ...statistics,
-            gamesPlayed: gamesPlayed,
-            guesses: {
-              ...statistics.guesses,
-              fail: gamesFailed
-            }
-          }));
+          updateStatisticsState(false);
+          setShowModal(true);
         }
 
         if(currentRow < 5){
@@ -150,15 +171,7 @@ const Game = React.memo(() => {
     })
   }
 
-  // load anytime
-      // check if has storage ? setState : nothing
-  // play first game
-      // set storage
-      // set refresh to true
-
-
   const checkLocalStorage = () => {
-    // window.localStorage.clear();
     let storage = window.localStorage.getItem('notWordle-statistics');
     let reload = window.localStorage.getItem('notWordle-reload');
     if(storage && reload){
@@ -166,8 +179,9 @@ const Game = React.memo(() => {
     }
   }
 
-  
-
+  useEffect(() => {
+    checkLocalStorage();
+  }, [showModal]);
 
   useEffect(() => {
     if(isGameOver && wordle !== '') window.localStorage.setItem('notWordle-statistics', JSON.stringify(statistics));
@@ -193,8 +207,8 @@ const Game = React.memo(() => {
     return () => window.removeEventListener("keyup", onKeyUp);
   }, [checkRow, currentTile, deleteLetter, handleKeyInput]);
     
-
   const getTheWord = () => {
+    setShowModal(false);
     const button = document.getElementById('StartGame');
     const word: string = getWord();
     console.log(word);
@@ -205,15 +219,19 @@ const Game = React.memo(() => {
     setCurrentTile(0);
     guessRows = resetGuessRows();
     resetBoard();
-    checkLocalStorage();
     button?.blur();
   }
+
+  const closeModal = () => {
+    setShowModal(false);
+  }
+
+  
 
   return (
     <div className="game-container">
       <div className="title-container">
         <h1>Not Wordle</h1>
-        <button id="StartGame" className="button" onClick={getTheWord}>Start Game</button>
       </div>
 
       <Message message={message} />
@@ -221,7 +239,12 @@ const Game = React.memo(() => {
       <Tiles guessRows={guessRows} />
       
       <Keys keys={keys} handleKeyInput={(keyVal: string) => handleKeyInput(keyVal)} />
-      
+
+      {showModal && <GameModal 
+                      statistics={statistics} 
+                      isOpen={showModal}	
+                      onRequestClose={closeModal} 
+                      getTheWord={() => getTheWord()}/>}
 
     </div>
   );

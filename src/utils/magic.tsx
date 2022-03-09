@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { Statistics } from '../types/types';
 
 function wordList(): string[] {
 	const words = require('./words.json');
@@ -54,18 +55,18 @@ export function resetBoard() {
 		tiles[i].className = 'tile';
 	};
 	const keys = document.getElementsByClassName('key-button');
-	for (var i = 0; i < keys.length; i++) {
-		keys[i].className = 'key-button';
+	for (var k = 0; k < keys.length; k++) {
+		keys[k].className = 'key-button';
 	};
 }
 
-export const defaultStatistics = {
-	"currentStreak": 0,
-	"gamesPlayed": 0,
-	"gamesWon": 0,
-	"guesses": {
-	  "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "fail": 0
+export const defaultStatistics: Statistics = {
+	currentStreak: 0,
+	gamesPlayed: 0,
+	gamesWon: 0,
+	guesses: {
+	  1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, fail: 0
 	},
-	"maxStreak": 0,
-	"winPercentage": 0,
+	maxStreak: 0,
+	winPercentage: 0,
   }
