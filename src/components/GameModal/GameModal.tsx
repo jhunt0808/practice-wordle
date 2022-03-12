@@ -23,20 +23,23 @@ const GameModal: FunctionComponent<IModalProps> = ({
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      backgroundColor: '#121212',
+      backgroundColor: '#222222',
       border: 'none',
       borderRadius: '10px',
-      color: '#111111'
+      color: '#ffffff',
+      width: '90vw',
+      maxWidth: '480px'
     },
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
     }
 	};
 
   Modal.setAppElement('#root');
 
   const getPercent = (perc: number): number => {
-    return perc * 100;
+    let percent = perc * 100;
+    return percent % 1 === 0 ? percent : Number(percent.toFixed(2));
   }
 
   return (
@@ -46,14 +49,28 @@ const GameModal: FunctionComponent<IModalProps> = ({
         onRequestClose={onRequestClose}
         style={customStyles}
         contentLabel="Example Modal"
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEsc={false}
       >
-        <div className="statistics">
+        <div className="statisticsWrapper">
           <h3>Statistics</h3>
-          <div>
-            <div>Games Played: {statistics.gamesPlayed}</div>
-            <div>Win Percentage: {getPercent(statistics.winPercentage)}%</div>
-            <div>Current Streak: {statistics.currentStreak}</div>
-            <div>Max Streak: {statistics.maxStreak}</div>
+          <div className="statistics">
+            <div className="statisticContainer">
+              <div className="stat">{statistics.gamesPlayed}</div>
+              <div className="label">Games<br />Played</div>
+            </div>
+            <div className="statisticContainer">
+              <div className="stat">{getPercent(statistics.winPercentage)}%</div>
+              <div className="label">Win %</div>
+            </div>
+            <div className="statisticContainer">
+              <div className="stat">{statistics.currentStreak}</div>
+              <div className="label">Current<br />Streak</div>
+            </div>
+            <div className="statisticContainer">
+              <div className="stat">{statistics.maxStreak}</div>
+              <div className="label">Max<br />Streak</div>
+            </div>
           </div>
           <button id="StartGame" className="button" onClick={getTheWord}>Start Game</button>
         </div>
