@@ -8,11 +8,18 @@ interface IModalProps {
 	isOpen: boolean;
 	onRequestClose: () => void,
   getTheWord: () => void,
+  isGameOver: boolean,
+  theWord: string,
 }
 
 
 const GameModal: FunctionComponent<IModalProps> = ({
-	statistics, isOpen, onRequestClose, getTheWord
+	statistics, 
+  isOpen, 
+  onRequestClose, 
+  getTheWord, 
+  isGameOver,
+  theWord
 }) => {
 
   const customStyles = {
@@ -27,8 +34,8 @@ const GameModal: FunctionComponent<IModalProps> = ({
       border: 'none',
       borderRadius: '10px',
       color: '#ffffff',
-      width: '90vw',
-      maxWidth: '480px'
+      width: '85vw',
+      maxWidth: '450px'
     },
     overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -39,7 +46,7 @@ const GameModal: FunctionComponent<IModalProps> = ({
 
   const getPercent = (perc: number): number => {
     let percent = perc * 100;
-    return percent % 1 === 0 ? percent : Number(percent.toFixed(2));
+    return percent % 1 === 0 ? percent : Number(percent.toFixed(0));
   }
 
   return (
@@ -54,6 +61,11 @@ const GameModal: FunctionComponent<IModalProps> = ({
       >
         <div className="statisticsWrapper">
           <h3>Statistics</h3>
+          {theWord && 
+            <div className="endGameMessage">
+              <div className="theWord">{theWord}</div>
+              <div className="message">{statistics.currentStreak > 0 ? 'Nice Job!' : 'Better luck next time!'}</div>
+            </div>}
           <div className="statistics">
             <div className="statisticContainer">
               <div className="stat">{statistics.gamesPlayed}</div>
@@ -72,7 +84,7 @@ const GameModal: FunctionComponent<IModalProps> = ({
               <div className="label">Max<br />Streak</div>
             </div>
           </div>
-          <button id="StartGame" className="button" onClick={getTheWord}>Start Game</button>
+          <button id="StartGame" className="button" onClick={getTheWord}>{isGameOver ? 'Play Again' : 'Start Game'}</button>
         </div>
         
       </Modal>

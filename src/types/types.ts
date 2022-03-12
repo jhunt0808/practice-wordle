@@ -27,5 +27,6 @@ export type Statistics = {
 	gamesWon: number,
 	guesses: Guesses,
 	maxStreak: number,
-	winPercentage: number
+	winPercentage: number,
+	wordsUsed: string[]
 }

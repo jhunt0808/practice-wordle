@@ -13,6 +13,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		padding: 6px 0 12px;
 		width: 100%;
 
 		.statisticContainer {
@@ -20,8 +21,8 @@
 			display: flex;
 			flex-direction: column;
 			height: 80px;
-			max-width: 135px;
-			padding: 6px 12px;
+			max-width: 90px;
+			padding: 0 12px;
 			width: 100%;
 
 			.stat {
@@ -36,6 +37,24 @@
 				text-align: center;
 
 			}
+		}
+	}
+
+	.endGameMessage {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		margin: 0 0 1.75em;
+		width: 100%;
+
+		.theWord {
+			font-size: 2em;
+			font-weight: bold;
+			padding-bottom: 0.5em;
+		}
+
+		.message {
+			font-size: 1.5em;
 		}
 	}
 

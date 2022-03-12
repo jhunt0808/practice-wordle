@@ -1,4 +1,5 @@
 export const keys = [
+  [
   'Q',
   'W',
   'E',
@@ -9,6 +10,8 @@ export const keys = [
   'I',
   'O',
   'P',
+  ],
+  [
   'A',
   'S',
   'D',
@@ -18,13 +21,16 @@ export const keys = [
   'J',
   'K',
   'L',
-  'ENTER',
-  'Z',
-  'X',
-  'C',
-  'V',
-  'B',
-  'N',
-  'M',
-  '⌫',
+  ],
+  [
+	'ENTER',
+	'Z',
+	'X',
+	'C',
+	'V',
+	'B',
+	'N',
+	'M',
+	'⌫',
+  ]
 ]

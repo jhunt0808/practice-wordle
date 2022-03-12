@@ -1,15 +1,17 @@
 .game-container {
-	height: 90vh;
+	align-items: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: center;
+	max-height: 90vh;
+	position: relative;
+	width: 100%;
 }
 
 .title-container {
-    text-align: center;
-    width: 510px;
     border-bottom: solid 1px #3a3a3c;
+	text-align: center;
+	width: 100%;
 }
 
 .button {

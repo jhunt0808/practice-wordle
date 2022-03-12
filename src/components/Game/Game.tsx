@@ -12,6 +12,7 @@ const Game = React.memo(() => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [wordle, setWorld] = useState<string>('');
+  const [wordsUsed, setWordsUsed] = useState<string[]>([]);
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentTile, setCurrentTile] = useState<number>(0);
   const [statistics, setStatistics] = useState<any>(defaultStatistics);
@@ -41,7 +42,8 @@ const Game = React.memo(() => {
           [guessRow]: guessRowTotalWon
         },
         maxStreak,
-        winPercentage
+        winPercentage,
+        wordsUsed
       }));
 
     } else {
@@ -54,7 +56,8 @@ const Game = React.memo(() => {
           ...statistics.guesses,
           fail: gamesFailed
         },
-        winPercentage
+        winPercentage,
+        wordsUsed
       }));
     }
   }
@@ -106,7 +109,6 @@ const Game = React.memo(() => {
 
       flipTile();
       if(wordle === guess){
-        showMessage('You did it!');
         setIsGameOver(true);
         updateStatisticsState(true);
         window.localStorage.setItem('notWordle-reload', JSON.stringify(true));
@@ -114,8 +116,8 @@ const Game = React.memo(() => {
         return;
       } else {
         if(currentRow >= 5) {
+          window.localStorage.setItem('notWordle-reload', JSON.stringify(true));
           setIsGameOver(true);
-          showMessage(`${wordle}`, true);
           updateStatisticsState(false);
           setShowModal(true);
         }
@@ -210,9 +212,9 @@ const Game = React.memo(() => {
   const getTheWord = () => {
     setShowModal(false);
     const button = document.getElementById('StartGame');
-    const word: string = getWord();
-    console.log(word);
+    const word: string = getWord(wordsUsed);
     setWorld(word);
+    setWordsUsed([...wordsUsed, word]);
     setIsGameOver(false);
     setMessage('');
     setCurrentRow(0);
@@ -244,7 +246,9 @@ const Game = React.memo(() => {
                       statistics={statistics} 
                       isOpen={showModal}	
                       onRequestClose={closeModal} 
-                      getTheWord={() => getTheWord()}/>}
+                      getTheWord={() => getTheWord()}
+                      isGameOver={isGameOver}
+                      theWord={wordle}/>}
 
     </div>
   );

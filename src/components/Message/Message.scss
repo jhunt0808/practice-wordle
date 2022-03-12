@@ -1,5 +1,11 @@
 .message-container {
-    height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    height: 50px;
+	width: 100%;
+	position: absolute;
+	top: 100px;
 
 	p {
 		background-color: #FFFFFF;
@@ -9,5 +15,6 @@
 		font-weight: bold;
 		padding: 12px;
 		margin: 0;
+		max-width: 300px;
 	}
 }

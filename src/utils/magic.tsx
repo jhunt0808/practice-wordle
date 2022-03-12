@@ -17,8 +17,9 @@ function filteredWords(): string[] {
 
 const wordsToUse: string[] = filteredWords();
 
-export function getWord(): string {
-	const word = _.sample(wordsToUse);
+export function getWord(wordsUsed: string[]): string {
+	const pickFromThisList = _.difference(wordsToUse, wordsUsed)
+	const word = _.sample(pickFromThisList);
 
 	return _.upperCase(word);
 }
@@ -69,4 +70,5 @@ export const defaultStatistics: Statistics = {
 	},
 	maxStreak: 0,
 	winPercentage: 0,
+	wordsUsed: []
   }
