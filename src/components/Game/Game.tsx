@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Guesses, KeyCodes, Statistics } from '../../types/types';
+import { KeyCodes } from '../../types/types';
 import { keys } from '../../utils/keys';
 import { getWord, defaultGuessRows, defaultStatistics, isInWordList, resetGuessRows, resetBoard } from '../../utils/magic';
 import Keys from "../Keys/Keys";

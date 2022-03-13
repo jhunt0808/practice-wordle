@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { Statistics } from '../types/types';
 
-function wordList(): string[] {
-	const words = require('./words.json');
+// function wordList(): string[] {
+// 	const words = require('./words.json');
 	
-	const wordsEndWithS = _.filter(words, function(w) { return w.charAt(4) === 's'})
-	const wordsEndWithSS = _.filter(words, function(w) { return w.charAt(3) === 's' && w.charAt(4) === 's'})
-	const newWordsList = _.concat(wordsEndWithSS, _.difference(words, wordsEndWithS));
-	return newWordsList;
-}
+// 	const wordsEndWithS = _.filter(words, function(w) { return w.charAt(4) === 's'})
+// 	const wordsEndWithSS = _.filter(words, function(w) { return w.charAt(3) === 's' && w.charAt(4) === 's'})
+// 	const newWordsList = _.concat(wordsEndWithSS, _.difference(words, wordsEndWithS));
+// 	return newWordsList;
+// }
 
 function filteredWords(): string[] {
 	const words = require('./filteredWords.json');
