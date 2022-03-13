@@ -7,11 +7,12 @@ import Message from "../Message/Message";
 import GameModal from "../GameModal/GameModal";
 import Tiles from "../Tiles/Tiles";
 import "./Game.scss";
+import ReactGA from 'react-ga';
 
 const Game = React.memo(() => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const [wordle, setWorld] = useState<string>('');
+  const [word, setWord] = useState<string>('');
   const [wordsUsed, setWordsUsed] = useState<string[]>([]);
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentTile, setCurrentTile] = useState<number>(0);
@@ -108,15 +109,15 @@ const Game = React.memo(() => {
       }
 
       flipTile();
-      if(wordle === guess){
+      if(word === guess){
         setIsGameOver(true);
         updateStatisticsState(true);
-        window.localStorage.setItem('notWordle-reload', JSON.stringify(true));
+        window.localStorage.setItem('practiceWords-reload', JSON.stringify(true));
         setShowModal(true);
         return;
       } else {
         if(currentRow >= 5) {
-          window.localStorage.setItem('notWordle-reload', JSON.stringify(true));
+          window.localStorage.setItem('practiceWords-reload', JSON.stringify(true));
           setIsGameOver(true);
           updateStatisticsState(false);
           setShowModal(true);
@@ -143,7 +144,7 @@ const Game = React.memo(() => {
 
   const flipTile = () => {
     const rowTiles = document.querySelector('#guessRow-' + currentRow)?.childNodes;
-    let checkWordle = wordle;
+    let checkWord = word;
     const guess: { letter: any; color: string; }[] = [];
 
     rowTiles?.forEach((tile: any) => {
@@ -151,16 +152,16 @@ const Game = React.memo(() => {
     });
 
     guess.forEach((guess: any, index: number) => {
-      if(guess.letter === wordle[index]){
+      if(guess.letter === word[index]){
         guess.color = 'green-overlay';
-        checkWordle = checkWordle.replace(guess.letter, '');
+        checkWord = checkWord.replace(guess.letter, '');
       }
     })
 
     guess.forEach((guess: any) => {
-      if(checkWordle.includes(guess.letter)){
+      if(checkWord.includes(guess.letter)){
         guess.color = 'yellow-overlay';
-        checkWordle = checkWordle.replace(guess.letter, '');
+        checkWord = checkWord.replace(guess.letter, '');
       }
     })
     
@@ -174,8 +175,8 @@ const Game = React.memo(() => {
   }
 
   const checkLocalStorage = () => {
-    let storage = window.localStorage.getItem('notWordle-statistics');
-    let reload = window.localStorage.getItem('notWordle-reload');
+    let storage = window.localStorage.getItem('practiceWords-statistics');
+    let reload = window.localStorage.getItem('practiceWords-reload');
     if(storage && reload){
       setStatistics(JSON.parse(storage));
     }
@@ -186,8 +187,11 @@ const Game = React.memo(() => {
   }, [showModal]);
 
   useEffect(() => {
-    if(isGameOver && wordle !== '') window.localStorage.setItem('notWordle-statistics', JSON.stringify(statistics));
-  }, [statistics, isGameOver, wordle]);
+    if(isGameOver && word !== '') {
+      window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
+      ReactGA.plugin.execute('practiceWords', 'statisticsUpdated', statistics);
+    }
+  }, [statistics, isGameOver, word]);
 
 
   useEffect(() => {
@@ -213,7 +217,7 @@ const Game = React.memo(() => {
     setShowModal(false);
     const button = document.getElementById('StartGame');
     const word: string = getWord(wordsUsed);
-    setWorld(word);
+    setWord(word);
     setWordsUsed([...wordsUsed, word]);
     setIsGameOver(false);
     setMessage('');
@@ -233,7 +237,7 @@ const Game = React.memo(() => {
   return (
     <div className="game-container">
       <div className="title-container">
-        <h1>Not Wordle</h1>
+        <h1>Practice Words</h1>
       </div>
 
       <Message message={message} />
@@ -248,7 +252,7 @@ const Game = React.memo(() => {
                       onRequestClose={closeModal} 
                       getTheWord={() => getTheWord()}
                       isGameOver={isGameOver}
-                      theWord={wordle}/>}
+                      theWord={word}/>}
 
     </div>
   );
