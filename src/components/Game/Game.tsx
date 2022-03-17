@@ -219,7 +219,7 @@ const Game = React.memo(() => {
     const button = document.getElementById('StartGame');
     const word: string = getWord(wordsUsed);
     setWord(word);
-    ReactGA.event("new game", {word: word})
+    ReactGA.event("new_game", {word: word})
     setWordsUsed([...wordsUsed, word]);
     setIsGameOver(false);
     setMessage('');
