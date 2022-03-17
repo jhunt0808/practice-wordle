@@ -18,7 +18,6 @@ const Game = React.memo(() => {
   const [currentTile, setCurrentTile] = useState<number>(0);
   const [statistics, setStatistics] = useState<any>(defaultStatistics);
   const [showModal, setShowModal] = useState<boolean>(true);
-  var host = window.location.hostname;
 
   let guessRows = defaultGuessRows;
 
@@ -190,9 +189,10 @@ const Game = React.memo(() => {
   useEffect(() => {
     if(isGameOver && word !== '') {
       window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
-      if(host !== "localhost") ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated', value: statistics}, )
+      ReactGA.send({fieldsObject: statistics});
+      ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated'}, )
     }
-  }, [statistics, isGameOver, word, host]);
+  }, [statistics, isGameOver, word]);
 
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const Game = React.memo(() => {
   }, [checkRow, currentTile, deleteLetter, handleKeyInput]);
     
   const getTheWord = () => {
-    if(host !== "localhost") ReactGA.event({category: 'New Game', action: 'click button', label: 'get the word'}, )
+    ReactGA.event({category: 'New Game', action: 'click button', label: 'get the word'}, )
     setShowModal(false);
     const button = document.getElementById('StartGame');
     const word: string = getWord(wordsUsed);
