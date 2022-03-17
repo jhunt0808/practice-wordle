@@ -3,11 +3,12 @@ import './App.scss';
 import Game from './components/Game/Game';
 import ReactGA from 'react-ga';
 
-
 const App: FunctionComponent = () => {
 
 	const TRACKING_ID = "G-7ZSXHC713G"; 
-	ReactGA.initialize(TRACKING_ID, { standardImplementation: true });
+	ReactGA.initialize(TRACKING_ID,
+     { debug:true, standardImplementation: true });
+  ReactGA.pageview(window.location.pathname);
   
   return (
     <div className="App">

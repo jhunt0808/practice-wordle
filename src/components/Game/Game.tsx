@@ -189,6 +189,7 @@ const Game = React.memo(() => {
   useEffect(() => {
     if(isGameOver && word !== '') {
       window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
+      ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated', value: statistics}, )
       ReactGA.plugin.execute('practiceWords', 'statisticsUpdated', statistics);
     }
   }, [statistics, isGameOver, word]);
