@@ -1,20 +1,21 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import './App.scss';
 import Game from './components/Game/Game';
 import ReactGA from 'react-ga';
 
-const App: FunctionComponent = () => {
+export default class App {
+	
+  render() {
 
-	const TRACKING_ID = "G-7ZSXHC713G"; 
-	ReactGA.initialize(TRACKING_ID,
+    const TRACKING_ID = "G-7ZSXHC713G"; 
+	  ReactGA.initialize(TRACKING_ID,
      { debug:true, standardImplementation: true });
-  ReactGA.pageview(window.location.pathname);
+    ReactGA.pageview(window.location.pathname);
   
-  return (
+
+    return (
     <div className="App">
       <Game />
     </div>
-  );
+    )};
 }
-
-export default App;
