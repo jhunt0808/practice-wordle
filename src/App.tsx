@@ -6,15 +6,12 @@ export default class App extends React.Component {
   
 
   componentDidMount() {
-    ReactGA.initialize("G-7ZSXHC713G");
-    ReactGA.pageview(window.location.pathname);
+    ReactGA.initialize("G-7ZSXHC713G", {debug: true});
+    // ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }
 
   
   render() {
-
-    
-
     return (
       <div className="App">
         <Game />
