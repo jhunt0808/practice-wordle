@@ -2,11 +2,20 @@ import _ from 'lodash';
 import { Statistics } from '../types/types';
 
 // function wordList(): string[] {
-// 	const words = require('./words.json');
+// 	//const words = require('./words.json');
+// 	const words = require('./filteredWords.json');
 	
 // 	const wordsEndWithS = _.filter(words, function(w) { return w.charAt(4) === 's'})
 // 	const wordsEndWithSS = _.filter(words, function(w) { return w.charAt(3) === 's' && w.charAt(4) === 's'})
 // 	const newWordsList = _.concat(wordsEndWithSS, _.difference(words, wordsEndWithS));
+// 	function hasDupplicateLetters(str: string) {
+// 		if((/(\w)\1{1}/).test(str)){
+// 			console.log(str);
+// 		}
+// 	}
+
+// 	_.forEach(newWordsList, hasDupplicateLetters);
+
 // 	return newWordsList;
 // }
 

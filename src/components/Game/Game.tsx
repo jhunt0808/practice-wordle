@@ -18,6 +18,7 @@ const Game = React.memo(() => {
   const [currentTile, setCurrentTile] = useState<number>(0);
   const [statistics, setStatistics] = useState<any>(defaultStatistics);
   const [showModal, setShowModal] = useState<boolean>(true);
+  var host = window.location.hostname;
 
   let guessRows = defaultGuessRows;
 
@@ -113,14 +114,14 @@ const Game = React.memo(() => {
         setIsGameOver(true);
         updateStatisticsState(true);
         window.localStorage.setItem('practiceWords-reload', JSON.stringify(true));
-        setShowModal(true);
+        setTimeout(() => setShowModal(true), 2200);
         return;
       } else {
         if(currentRow >= 5) {
           window.localStorage.setItem('practiceWords-reload', JSON.stringify(true));
           setIsGameOver(true);
           updateStatisticsState(false);
-          setShowModal(true);
+          setTimeout(() => setShowModal(true), 2200);
         }
 
         if(currentRow < 5){
@@ -189,8 +190,7 @@ const Game = React.memo(() => {
   useEffect(() => {
     if(isGameOver && word !== '') {
       window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
-      ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated', value: statistics}, )
-      ReactGA.plugin.execute('practiceWords', 'statisticsUpdated', statistics);
+      if(host !== "localhost") ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated', value: statistics}, )
     }
   }, [statistics, isGameOver, word]);
 
@@ -215,6 +215,7 @@ const Game = React.memo(() => {
   }, [checkRow, currentTile, deleteLetter, handleKeyInput]);
     
   const getTheWord = () => {
+    if(host !== "localhost") ReactGA.event({category: 'New Game', action: 'click button', label: 'get the word'}, )
     setShowModal(false);
     const button = document.getElementById('StartGame');
     const word: string = getWord(wordsUsed);
