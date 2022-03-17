@@ -6,8 +6,8 @@ export default class App extends React.Component {
   
 
   componentDidMount() {
-    
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+    ReactGA.initialize("G-7ZSXHC713G", {testMode: true});
+    ReactGA.event("pageview", {page: window.location.pathname });
   }
 
   

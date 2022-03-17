@@ -20,9 +20,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "files": [
-	"node_modules/react-simple-keyboard/tsconfig.json"
-  ],
+//   "files": [
+// 	"node_modules/react-simple-keyboard/tsconfig.json"
+//   ],
   "include": [
     "src",
   ],

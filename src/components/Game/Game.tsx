@@ -189,8 +189,7 @@ const Game = React.memo(() => {
   useEffect(() => {
     if(isGameOver && word !== '') {
       window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
-      ReactGA.send({fieldsObject: statistics});
-      ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated'}, )
+      ReactGA.event("statistics", {fieldsObject: statistics})
     }
   }, [statistics, isGameOver, word]);
 
@@ -215,11 +214,12 @@ const Game = React.memo(() => {
   }, [checkRow, currentTile, deleteLetter, handleKeyInput]);
     
   const getTheWord = () => {
-    ReactGA.event({category: 'New Game', action: 'click button', label: 'get the word'}, )
+    //ReactGA.ga({category: 'New Game', action: 'nopers button', label: 'get the word'}, )
     setShowModal(false);
     const button = document.getElementById('StartGame');
     const word: string = getWord(wordsUsed);
     setWord(word);
+    ReactGA.event("new game", {word: word})
     setWordsUsed([...wordsUsed, word]);
     setIsGameOver(false);
     setMessage('');
