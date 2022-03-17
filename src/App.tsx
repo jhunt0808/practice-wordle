@@ -2,9 +2,8 @@ import React from 'react';
 import './App.scss';
 import Game from './components/Game/Game';
 import ReactGA from 'react-ga';
-
-export default class App {
-	
+export default class App extends React.Component {
+  
   render() {
 
     const TRACKING_ID = "G-7ZSXHC713G"; 
@@ -14,8 +13,8 @@ export default class App {
   
 
     return (
-    <div className="App">
-      <Game />
-    </div>
+      <div className="App">
+        <Game />
+      </div>
     )};
 }
