@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.scss';
 import Game from './components/Game/Game';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 export default class App extends React.Component {
   
 
   componentDidMount() {
-    ReactGA.initialize("G-7ZSXHC713G", {debug: true});
-    // ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+    
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }
 
   

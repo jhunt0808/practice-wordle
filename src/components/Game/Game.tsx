@@ -7,7 +7,7 @@ import Message from "../Message/Message";
 import GameModal from "../GameModal/GameModal";
 import Tiles from "../Tiles/Tiles";
 import "./Game.scss";
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 const Game = React.memo(() => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
