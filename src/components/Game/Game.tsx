@@ -192,7 +192,7 @@ const Game = React.memo(() => {
       window.localStorage.setItem('practiceWords-statistics', JSON.stringify(statistics));
       if(host !== "localhost") ReactGA.event({category: 'statisticsUpdated', action: 'statisticsUpdated', label: 'statisticsUpdated', value: statistics}, )
     }
-  }, [statistics, isGameOver, word]);
+  }, [statistics, isGameOver, word, host]);
 
 
   useEffect(() => {
