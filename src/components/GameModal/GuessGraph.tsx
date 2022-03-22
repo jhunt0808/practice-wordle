@@ -50,7 +50,8 @@ const GuessGraph: FunctionComponent<IGuessGraphProps> = ({
           color: "#FFFFFF"
         },
         ticks: {
-          color: "#FFFFFF"
+          color: "#FFFFFF",
+          stepSize: 1
         }
       },
       y: {
@@ -58,7 +59,8 @@ const GuessGraph: FunctionComponent<IGuessGraphProps> = ({
           color: "#FFFFFF"
         },
         ticks: {
-          color: "#FFFFFF"
+          color: "#FFFFFF",
+          stepSize: 1
         }
       }
     }
