@@ -1,0 +1,31 @@
+.statistics {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 0 12px;
+	width: 100%;
+
+	.statisticContainer {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		height: 80px;
+		max-width: 90px;
+		padding: 0 12px;
+		width: 100%;
+
+		.stat {
+			font-size: 2em;
+			font-weight: bold;
+			padding-bottom: 6px;
+			text-align: center;
+		}
+
+		.label {
+			font-size: 0.75em;
+			text-align: center;
+
+		}
+	}
+}

@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react";
 import { Statistics } from "../../types/types";
 import Modal from 'react-modal';
 import "./GameModal.scss";
+import StatisticsDisplay from "./StatisticsDisplay";
+import GuessGraph from "./GuessGraph";
 
 interface IModalProps {
 	statistics: Statistics;
@@ -44,11 +46,6 @@ const GameModal: FunctionComponent<IModalProps> = ({
 
   Modal.setAppElement('#root');
 
-  const getPercent = (perc: number): number => {
-    let percent = perc * 100;
-    return percent % 1 === 0 ? percent : Number(percent.toFixed(0));
-  }
-
   return (
 	  <div>
       <Modal
@@ -66,24 +63,8 @@ const GameModal: FunctionComponent<IModalProps> = ({
               <div className="theWord">{theWord}</div>
               <div className="message">{statistics.currentStreak > 0 ? 'Nice Job!' : 'Better luck next time!'}</div>
             </div>}
-          <div className="statistics">
-            <div className="statisticContainer">
-              <div className="stat">{statistics.gamesPlayed}</div>
-              <div className="label">Games<br />Played</div>
-            </div>
-            <div className="statisticContainer">
-              <div className="stat">{getPercent(statistics.winPercentage)}%</div>
-              <div className="label">Win %</div>
-            </div>
-            <div className="statisticContainer">
-              <div className="stat">{statistics.currentStreak}</div>
-              <div className="label">Current<br />Streak</div>
-            </div>
-            <div className="statisticContainer">
-              <div className="stat">{statistics.maxStreak}</div>
-              <div className="label">Max<br />Streak</div>
-            </div>
-          </div>
+          <StatisticsDisplay statistics={statistics} />
+          <GuessGraph guesses={statistics.guesses} gamesPlayed={statistics.gamesPlayed} />
           <button id="StartGame" className="button" onClick={getTheWord}>{isGameOver ? 'Play Again' : 'Start Game'}</button>
         </div>
         
