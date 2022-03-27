@@ -1,0 +1,42 @@
+.guess-bars {
+  width: 80%;
+}
+.bars-wrapper {
+	display: flex;
+	flex-direction: column;
+  font-size: 14px;
+  width: 100%;
+
+	.bar-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4px;
+    width: 100%;
+
+		.guess {
+      width: 20px;
+
+		}
+
+		.bar {
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-end;
+      width: calc(100% - 20px);
+		}
+
+    .fill {
+      background-color: #538d4e;
+      font-size: 12px;
+      font-weight: bold;
+      min-width: 7%;
+      display: flex;
+      align-items: flex-end;
+      padding-right: 6px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      flex-direction: column;
+    }
+
+	}
+}
