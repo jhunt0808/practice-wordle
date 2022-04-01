@@ -250,7 +250,7 @@ const Game = React.memo(() => {
 		const word: string = getWord(wordsUsed);
 		setWord(word);
 		ReactGA.event('new_game', { word: word });
-		setWordsUsed([...wordsUsed, word]);
+		setWordsUsed([...statistics.wordsUsed, word]);
 		setIsGameOver(false);
 		setWonOnGuess(0);
 		setMessage('');
