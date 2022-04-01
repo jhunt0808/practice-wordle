@@ -179,16 +179,16 @@ const Game = React.memo(() => {
 			});
 		});
 
-		guess.forEach((guess: any, index: number) => {
-			if (guess.letter === word[index]) {
-				guess.color = 'green-overlay';
+		guess.forEach((guess: any) => {
+			if (checkWord.includes(guess.letter)) {
+				guess.color = 'yellow-overlay';
 				checkWord = checkWord.replace(guess.letter, '');
 			}
 		});
 
-		guess.forEach((guess: any) => {
-			if (checkWord.includes(guess.letter)) {
-				guess.color = 'yellow-overlay';
+		guess.forEach((guess: any, index: number) => {
+			if (guess.letter === word[index]) {
+				guess.color = 'green-overlay';
 				checkWord = checkWord.replace(guess.letter, '');
 			}
 		});
