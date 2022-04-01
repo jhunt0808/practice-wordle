@@ -5,11 +5,13 @@ import './GuessBars.scss';
 interface IGuessBarsProps {
 	guesses: Guesses;
 	gamesWon: number;
+	wonOnGuess: number;
 }
 
 const GuessBars: FunctionComponent<IGuessBarsProps> = ({
 	guesses,
 	gamesWon,
+	wonOnGuess,
 }) => {
 	const guessesList: number[] = Object.values(guesses);
 	guessesList.pop();
@@ -21,9 +23,35 @@ const GuessBars: FunctionComponent<IGuessBarsProps> = ({
 		return ((parseInt(guess) / mostWon) * 100).toString() + '%';
 	};
 
+	const winningGuess = (index: number): string => {
+		return wonOnGuess === index + 1 ? 'winningGuess' : '';
+	};
+
 	return (
 		<div className='guess-bars'>
-			{guessesStringList && (
+			{guessesStringList &&
+				guessesStringList.map((guess, index) => {
+					return (
+						<div key={index} className='bars-wrapper'>
+							<div className='bar-wrapper'>
+								<div className='guess'>{index + 1}</div>
+								<div className='bar'>
+									<div
+										style={{
+											width: getWidth(guess),
+										}}
+										className={`fill ${winningGuess(
+											index
+										)}`}
+									>
+										{guess}
+									</div>
+								</div>
+							</div>
+						</div>
+					);
+				})}
+			{/* {guessesStringList && (
 				<div className='bars-wrapper'>
 					<div className='bar-wrapper'>
 						<div className='guess'>1</div>
@@ -104,7 +132,7 @@ const GuessBars: FunctionComponent<IGuessBarsProps> = ({
 						</div>
 					</div>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };

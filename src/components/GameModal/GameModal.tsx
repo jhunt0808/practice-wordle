@@ -12,6 +12,7 @@ interface IModalProps {
 	getTheWord: () => void;
 	isGameOver: boolean;
 	theWord: string;
+	wonOnGuess: number;
 }
 
 const GameModal: FunctionComponent<IModalProps> = ({
@@ -21,6 +22,7 @@ const GameModal: FunctionComponent<IModalProps> = ({
 	getTheWord,
 	isGameOver,
 	theWord,
+	wonOnGuess,
 }) => {
 	const customStyles = {
 		content: {
@@ -70,6 +72,7 @@ const GameModal: FunctionComponent<IModalProps> = ({
 					<GuessBars
 						guesses={statistics.guesses}
 						gamesWon={statistics.gamesWon}
+						wonOnGuess={wonOnGuess}
 					/>
 					<button
 						id='StartGame'
